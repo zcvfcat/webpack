@@ -1,18 +1,10 @@
-import _ from 'lodash'
-import './style.css'
-import Icon from './icon.png'
-
-function component() {
+async function getComponent() {
   const element = document.createElement('div')
-
+  const { default: _ } = await import(/* webpackChunkName: "lodash" */ 'lodash')
   element.innerHTML = _.join(['Hello', 'webpack'], ' ')
-  element.classList.add('hello')
-
-  const myIcon = new Image()
-  myIcon.src = Icon
-
-  element.appendChild(myIcon)
   return element
 }
 
-document.body.appendChild(component())
+getComponent().then((component) => {
+  document.body.appendChild(component)
+})
