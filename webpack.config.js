@@ -1,14 +1,29 @@
 const path = require('path')
 
 module.exports = {
-  mode: 'development',
-  entry: {
-    index: './src/index.js',
-  },
+  entry: './src/index.js',
   output: {
-    filename: '[name].bundle.js',
-    chunkFilename: '[name].bundle.js',
-    publicPath: 'dist/',
+    filename: 'main.js',
     path: path.resolve(__dirname, 'dist'),
+    assetModuleFilename: 'images/[hash][ext]',
+  },
+  module: {
+    rules: [
+      {
+        test: /\.png/,
+        type: 'asset/resource',
+      },
+
+      {
+        test: /\.html/,
+        type: 'asset/resource',
+        generator: {
+          filename: 'static/[hash][ext]',
+        },
+      },
+    ],
+  },
+  experiments: {
+    asset: true,
   },
 }
