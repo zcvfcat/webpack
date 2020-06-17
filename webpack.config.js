@@ -1,29 +1,28 @@
 const path = require('path')
 
 module.exports = {
-  entry: './src/index.js',
+  entry: ['@babel/polyfill', './src/js/main.js'],
   output: {
-    filename: 'main.js',
-    path: path.resolve(__dirname, 'dist'),
-    assetModuleFilename: 'images/[hash][ext]',
+    path: path.resolve(__dirname, 'dist/js'),
+    filename: 'bundle.js',
   },
   module: {
     rules: [
       {
-        test: /\.png/,
-        type: 'asset/resource',
-      },
-
-      {
-        test: /\.html/,
-        type: 'asset/resource',
-        generator: {
-          filename: 'static/[hash][ext]',
+        test: /\.js$/,
+        include: [path.resolve(__dirname, 'src/js')],
+        exclude: /node_modules/,
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: ['@babel/preset-env'],
+            plugins: ['@babel/plugin-proposal-class-properties'],
+          },
         },
       },
     ],
   },
-  experiments: {
-    asset: true,
-  },
+  devtool: 'source-map',
+  // https://webpack.js.org/concepts/mode/#mode-development
+  mode: 'development',
 }
